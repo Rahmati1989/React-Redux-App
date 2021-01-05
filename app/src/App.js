@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+import './App.css';
+import { connect } from 'react-redux';
+import {getFacts} from './actions'
 import './App.css';
 
-function App() {
+function App(props) {
+  const buttonClick = (e) =>{
+    e.preventDefault();
+    props.getFacts();
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {console.log(props)}
+      <h1>Cat Call API</h1>
+      <button onClick={buttonClick}>Cat Call!</button>
+      {props.loading && <p>Loading . . .</p>}
+      {props.data.map(a => <p>{a.text}</p>)}
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    data: state.data,
+    loading: state.loading
+  
+  }
+}
+
+export default connect(mapStateToProps, {getFacts})(App)
